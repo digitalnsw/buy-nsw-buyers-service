@@ -1,0 +1,11 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 4).to_i + 1 %>
+  url: <%= ENV['DATABASE_URL'] %>
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 4).to_i + 1 %>
+  url: <%= ENV['DATABASE_URL'] %><%= ENV['TEST_ENV_NUMBER'] %>

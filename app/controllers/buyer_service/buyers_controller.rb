@@ -17,7 +17,7 @@ module BuyerService
     end
 
     def create_submit_events
-      ::SlackPostJob.perform_later(@buyer.id, :buyer_application_submitted.to_s)
+      ::SharedModules::SlackPostJob.perform_later(@buyer.id, :buyer_application_submitted.to_s)
       @buyer.create_event(session_user, "Buyer submitted by #{session_user.email}")
     end
 

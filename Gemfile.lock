@@ -1,5 +1,7 @@
-PATH
-  remote: ../shared_libraries
+GIT
+  remote: https://github.com/digitalnsw/buy-nsw-shared-libraries
+  revision: c48488a1291977ab79067a9342097bb4b5f85b56
+  tag: v2
   specs:
     shared_libraries (0.0.1)
       activeresource (~> 5.1.0)
@@ -302,3 +304,6 @@ DEPENDENCIES
   reform-rails (~> 0.1.7)
   shared_libraries!
   simplecov
+
+BUNDLED WITH
+   1.17.3

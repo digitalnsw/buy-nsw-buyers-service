@@ -4,6 +4,14 @@ jobs:
   test_and_tag:
     docker:
        - image: circleci/ruby:2.6.6-node-browsers
+         environment:
+           DATABASE_URL: postgresql://localhost/nsw_procure_test
+
+       - image: circleci/postgres:10.6-alpine-ram
+         environment:
+           POSTGRES_USER: circleci
+           POSTGRES_DB: nsw_procure_test
+           DATABASE_URL: postgresql://localhost/nsw_procure_test
 
     working_directory: ~/repo
 
@@ -13,6 +21,15 @@ jobs:
           root: ~/repo
           paths:
             - "*"
+      - run:
+          name: install dependencies
+          command: |
+            bundle install --jobs=4 --retry=3 --path vendor/bundle
+      - run: bin/setup
+      - run:
+          name: run tests
+          command: |
+            bundle exec rails test
       - run:
           name: tag successful build
           command: |

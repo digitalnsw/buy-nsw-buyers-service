@@ -21,8 +21,6 @@ group :test do
   gem 'pg_search'
   gem 'pretender'
   gem 'pry'
-  gem 'reform'
-  gem 'reform-rails', '~> 0.1.7'
 
   gem 'database_cleaner'
   gem 'minitest'

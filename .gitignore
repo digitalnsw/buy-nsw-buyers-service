@@ -1,6 +1,7 @@
 **/*.swp
 **/*.swo
 .idea
+.env.local
 .bundle/
 log/*.log
 pkg/

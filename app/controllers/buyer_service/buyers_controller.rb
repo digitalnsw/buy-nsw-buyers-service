@@ -34,7 +34,7 @@ module BuyerService
         @buyer.submit!
       end
 
-      update_session_attributes(buyer_status: @buyer.state)
+      update_session_user(buyer_status: @buyer.state)
       send_manager_email
       create_submit_events
 
@@ -58,7 +58,7 @@ module BuyerService
         @buyer.submit!
       end
 
-      update_session_attributes(buyer_id: @buyer.id, buyer_status: @buyer.state)
+      update_session_user(buyer_id: @buyer.id, buyer_status: @buyer.state)
       send_manager_email
       create_submit_events
 

@@ -15,9 +15,9 @@ module BuyerService
     enumerize :contactable, in: ['phone-number', 'email', 'none']
     enumerize :employment_status, in: ['employee', 'contractor', 'other-eligible']
 
-    validates :name, format: { with: /\A[a-zA-Z .'\-]*\z/ }
-    validates :organisation, format: { with: /\A[A-Za-z0-9 .,'":;+~*\-_|()@#$%&\/]*\z/ }
-    validates :manager_name, format: { with: /\A[a-zA-Z .'\-]*\z/ }, allow_blank: true
+    validates :name, format: { with: /\A[a-zA-Z .'\-]+\z/ }
+    validates :organisation, format: { with: /\A[A-Za-z0-9 .,'":;+~*\-_|()@#$%&\/]+\z/ }
+    validates :manager_name, format: { with: /\A[a-zA-Z .'\-]+\z/ }, allow_blank: true
     validates :manager_email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
     validates :contact_number, format: { with: /\A(\+)?[0-9 ()\-]{3,20}\z/ }, allow_blank: true
     validates :application_body, format: { with: /\A[A-Za-z0-9 .,'":;+~*\-_|()@#$%&\/\s]{0,1000}\z/ }

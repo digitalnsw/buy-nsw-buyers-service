@@ -3,7 +3,14 @@ require_dependency "buyer_service/application_controller"
 module BuyerService
   class BuyersController < BuyerService::ApplicationController
     skip_before_action :verify_authenticity_token, raise: false, only: [:approve_buyer, :approve, :decline, :assign, :deactivate]
-    before_action :authenticate_service, only: [:approve_buyer, :approve, :decline, :assign, :deactivate]
+    before_action :authenticate_service, only: [
+      :approve_buyer,
+      :approve,
+      :decline,
+      :assign,
+      :deactivate,
+      :check_email
+    ]
     before_action :authenticate_service_or_user, only: [:my_buyer, :can_buy, :show]
     before_action :authenticate_user, only: [:index, :create, :update]
     before_action :set_buyer, only: [:show, :can_buy]
@@ -148,6 +155,13 @@ module BuyerService
         pending: BuyerService::Buyer.where(state: [:awaiting_manager_approval, :awaiting_assignment, :ready_for_review]).count(:id),
         approved: BuyerService::Buyer.approved.count(:id),
       }
+    end
+
+    def check_email
+      email = params[:email].downcase.strip
+      domain = email.partition('@').last
+      render json: { valid: URI::MailTo::EMAIL_REGEXP.match?(email) &&
+                     BuyerService::BuyerDomain.exists?(domain: domain) }
     end
 
     private

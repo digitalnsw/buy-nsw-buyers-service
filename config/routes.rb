@@ -10,6 +10,7 @@ BuyerService::Engine.routes.draw do
     post :approve_buyer, on: :collection
     get :stats, on: :collection
     get :check_email, on: :collection
+    post :auto_register, on: :collection
   end
 
   # resources :public_sellers, only: [:index, :show] do

@@ -2,18 +2,52 @@ require_dependency "buyer_service/application_controller"
 
 module BuyerService
   class BuyersController < BuyerService::ApplicationController
-    skip_before_action :verify_authenticity_token, raise: false, only: [:approve_buyer, :approve, :decline, :assign, :deactivate]
+    skip_before_action :verify_authenticity_token, raise: false, only: [
+      :approve_buyer,
+      :approve,
+      :decline,
+      :assign,
+      :auto_register,
+      :deactivate
+    ]
+
     before_action :authenticate_service, only: [
       :approve_buyer,
       :approve,
       :decline,
       :assign,
       :deactivate,
+      :auto_register,
       :check_email
     ]
+
     before_action :authenticate_service_or_user, only: [:my_buyer, :can_buy, :show]
     before_action :authenticate_user, only: [:index, :create, :update]
     before_action :set_buyer, only: [:show, :can_buy]
+
+    def auto_register
+      email = params[:email].downcase.strip
+      user_id = params[:user_id].to_i
+      name = params[:name].strip
+      domain = email.partition('@').last
+      bd = BuyerDomain.find_by(domain: domain)
+
+      raise SharedModules::MethodNotAllowed if bd.nil?
+
+      @buyer = BuyerService::Buyer.find_or_initialize_by(user_id: user_id)
+
+      @buyer.state = 'approved'
+      @buyer.started_at ||= Time.now
+      @buyer.submitted_at ||= Time.now
+      @buyer.decided_at = Time.now
+      @buyer.decision_body = 'Auto approved'
+      @buyer.name = name
+      @buyer.organisation = bd.organisation
+
+      @buyer.save!
+
+      render json: serializer.show, status: :created, location: @buyer
+    end
 
     def send_manager_email
       @buyer.set_manager_approval_token!

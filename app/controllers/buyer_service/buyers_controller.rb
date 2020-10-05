@@ -194,8 +194,11 @@ module BuyerService
     def check_email
       email = params[:email].downcase.strip
       domain = email.partition('@').last
-      render json: { valid: URI::MailTo::EMAIL_REGEXP.match?(email) &&
-                     BuyerService::BuyerDomain.exists?(domain: domain) }
+      render json: {
+        valid: URI::MailTo::EMAIL_REGEXP.match?(email) &&
+        ( BuyerService::BuyerDomain.exists?(domain: domain) ||
+          BuyerService::BuyerEmail.exists?(email: email) )
+      }
     end
 
     private

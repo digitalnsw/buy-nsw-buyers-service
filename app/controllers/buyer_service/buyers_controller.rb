@@ -44,7 +44,7 @@ module BuyerService
       @buyer.name = name
       @buyer.organisation = bd.organisation
 
-      @buyer.save!
+      @buyer.save!(validate: false)
 
       render json: serializer.show, status: :created, location: @buyer
     end

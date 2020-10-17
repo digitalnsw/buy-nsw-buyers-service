@@ -8,7 +8,7 @@ module BuyerService
     end
 
     def attributes(buyer)
-      escape_recursive buyer.attributes.slice('id',
+      unescape_recursive buyer.attributes.slice('id',
                              'state',
                              'started_at',
                              'submitted_at',
